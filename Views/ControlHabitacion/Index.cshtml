@@ -1,0 +1,60 @@
+﻿@model List<DAS_Final.Models.Habitacion>
+
+@{
+    ViewData["Title"] = "Lista de Habitaciones";
+}
+
+<h1>Lista de Habitaciones</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Crear Nueva Habitación</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Imagen</th>
+            <th>Número</th>
+            <th>Tipo</th>
+            <th>Precio/Noche</th>
+            <th>Capacidad</th>
+            <th>Estatus</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var habitacion in Model)
+        {
+                <tr>
+                    <td>@habitacion.Id</td>
+                    <td>
+                    @if (!string.IsNullOrEmpty(habitacion.Img))
+                    {
+                                <img src="~/Img/@habitacion.Img" alt="Imagen habitación" style="max-width: 80px; max-height: 60px;" class="img-thumbnail" />
+                    }
+                    else
+                    {
+                                <span class="text-muted">Sin imagen</span>
+                    }
+                    </td>
+                    <td>@habitacion.NumeroHabitacion</td>
+                    <td>@habitacion.TipoHabitacion</td>
+                    <td>@habitacion.PrecioNoche.ToString("C")</td>
+                    <td>@habitacion.Capacidad personas</td>
+                    <td>
+                        <span class="badge @(habitacion.Estatus == "disponible" ? "bg-success" : 
+                                      habitacion.Estatus == "ocupada" ? "bg-danger" : 
+                                      "bg-warning")">
+                        @habitacion.Estatus
+                        </span>
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@habitacion.Id" class="btn btn-info btn-sm">Detalles</a>
+                        <a asp-action="Edit" asp-route-id="@habitacion.Id" class="btn btn-warning btn-sm">Editar</a>
+                        <a asp-action="Delete" asp-route-id="@habitacion.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>

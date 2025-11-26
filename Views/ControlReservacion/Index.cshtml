@@ -1,0 +1,53 @@
+﻿@model List<DAS_Final.Models.Reservacion>
+
+@{
+    ViewData["Title"] = "Lista de Reservaciones";
+}
+
+<h1>Lista de Reservaciones</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Crear Nueva Reservación</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Habitación</th>
+            <th>Fecha Entrada</th>
+            <th>Fecha Salida</th>
+            <th>Total</th>
+            <th>Estatus</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var reservacion in Model)
+        {
+                <tr>
+                    <td>@reservacion.Id</td>
+                    <td>@reservacion.Usuario.Nombre</td>
+                    <td>@reservacion.Habitacion.NumeroHabitacion</td>
+                    <td>@reservacion.FechaEntrada.ToString("dd/MM/yyyy")</td>
+                    <td>@reservacion.FechaSalida.ToString("dd/MM/yyyy")</td>
+                    <td>@reservacion.TotalHabitacion.ToString("C")</td>
+                    <td>
+                        <span class="badge @(reservacion.Estatus == "confirmada" ? "bg-success" : 
+                                      reservacion.Estatus == "activa" ? "bg-primary" :
+                                      reservacion.Estatus == "pendiente" ? "bg-warning" :
+                                      reservacion.Estatus == "completada" ? "bg-secondary" : 
+                                      "bg-danger")">
+                        @reservacion.Estatus
+                        </span>
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@reservacion.Id" class="btn btn-info btn-sm">Detalles</a>
+                        <a asp-action="Edit" asp-route-id="@reservacion.Id" class="btn btn-warning btn-sm">Editar</a>
+                        <a asp-action="Delete" asp-route-id="@reservacion.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>

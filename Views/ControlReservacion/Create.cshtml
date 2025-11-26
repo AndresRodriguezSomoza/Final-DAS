@@ -1,0 +1,61 @@
+﻿@model DAS_Final.Models.Reservacion
+
+@{
+    ViewData["Title"] = "Crear Reservación";
+}
+
+<h1>Crear Nueva Reservación</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="UsuarioId" class="control-label">Usuario</label>
+                <select asp-for="UsuarioId" class="form-control" asp-items="@(new SelectList(ViewBag.Usuarios, "Id", "Nombre"))">
+                    <option value="">Seleccionar Usuario</option>
+                </select>
+                <span asp-validation-for="UsuarioId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="HabitacionId" class="control-label">Habitación</label>
+                <select asp-for="HabitacionId" class="form-control" asp-items="@(new SelectList(ViewBag.Habitaciones, "Id", "NumeroHabitacion"))">
+                    <option value="">Seleccionar Habitación</option>
+                </select>
+                <span asp-validation-for="HabitacionId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FechaEntrada" class="control-label"></label>
+                <input asp-for="FechaEntrada" class="form-control" type="date" />
+                <span asp-validation-for="FechaEntrada" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FechaSalida" class="control-label"></label>
+                <input asp-for="FechaSalida" class="form-control" type="date" />
+                <span asp-validation-for="FechaSalida" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Estatus" class="control-label"></label>
+                <select asp-for="Estatus" class="form-control">
+                    <option value="pendiente">Pendiente</option>
+                    <option value="confirmada">Confirmada</option>
+                    <option value="activa">Activa</option>
+                    <option value="completada">Completada</option>
+                    <option value="cancelada">Cancelada</option>
+                </select>
+                <span asp-validation-for="Estatus" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Crear" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>

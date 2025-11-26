@@ -39,7 +39,6 @@ namespace DAS_Final.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Habitacion habitacion, IFormFile imagenArchivo)
         {
-            // Remover validación del campo Img para evitar el error
             ModelState.Remove("Img");
 
             if (ModelState.IsValid)
@@ -89,6 +88,9 @@ namespace DAS_Final.Controllers
                 return NotFound();
             }
 
+            // QUITAR la validación del campo Img
+            ModelState.Remove("Img");
+
             if (ModelState.IsValid)
             {
                 if (_operacionesHabitacion.NumeroHabitacionExiste(habitacion.NumeroHabitacion, habitacion.Id))
@@ -100,7 +102,10 @@ namespace DAS_Final.Controllers
                 // Obtener la habitación actual para mantener la imagen si no se sube una nueva
                 var habitacionActual = _operacionesHabitacion.ObtenerHabitacionPorId(id);
 
-                // Manejar la subida de la nueva imagen
+                // SIEMPRE mantener la imagen actual primero
+                habitacion.Img = habitacionActual.Img;
+
+                // Solo actualizar la imagen si se subió una nueva
                 if (imagenArchivo != null && imagenArchivo.Length > 0)
                 {
                     // Eliminar la imagen anterior si existe
@@ -112,18 +117,18 @@ namespace DAS_Final.Controllers
                     var nombreArchivo = await GuardarImagen(imagenArchivo);
                     habitacion.Img = nombreArchivo;
                 }
-                else
-                {
-                    // Mantener la imagen actual si no se sube una nueva
-                    habitacion.Img = habitacionActual.Img;
-                }
 
+                // Intentar editar la habitación
                 if (_operacionesHabitacion.EditarHabitacion(habitacion))
                 {
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index)); // ESTA LÍNEA SIEMPRE DEBE EJECUTARSE
                 }
-                ModelState.AddModelError("", "Error al actualizar la habitación");
+                else
+                {
+                    ModelState.AddModelError("", "Error al actualizar la habitación");
+                }
             }
+
             return View(habitacion);
         }
 

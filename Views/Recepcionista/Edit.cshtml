@@ -1,0 +1,135 @@
+﻿@model DAS_Final.Models.Reservacion
+
+@{
+    ViewData["Title"] = "Editar Reservación";
+}
+
+<h1>Editar Reservación</h1>
+
+@if (TempData["Error"] != null)
+{
+        <div class="alert alert-danger">
+        @TempData["Error"]
+        </div>
+}
+
+@if (TempData["Success"] != null)
+{
+        <div class="alert alert-success">
+        @TempData["Success"]
+        </div>
+}
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group mb-3">
+                <label asp-for="UsuarioId" class="control-label">Usuario</label>
+                <select asp-for="UsuarioId" class="form-control" asp-items="@(new SelectList(ViewBag.Usuarios, "Id", "Nombre"))">
+                    <option value="">Seleccionar Usuario</option>
+                </select>
+                <span asp-validation-for="UsuarioId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="HabitacionId" class="control-label">Habitación</label>
+                <select asp-for="HabitacionId" class="form-control" asp-items="@(new SelectList(ViewBag.Habitaciones, "Id", "NumeroHabitacion"))">
+                    <option value="">Seleccionar Habitación</option>
+                </select>
+                <span asp-validation-for="HabitacionId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="FechaEntrada" class="control-label">Fecha de Entrada</label>
+                <input asp-for="FechaEntrada" class="form-control" type="date" />
+                <span asp-validation-for="FechaEntrada" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="FechaSalida" class="control-label">Fecha de Salida</label>
+                <input asp-for="FechaSalida" class="form-control" type="date" />
+                <span asp-validation-for="FechaSalida" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label">Total Calculado:</label>
+                <div class="form-control-plaintext fw-bold">@Model.TotalHabitacion.ToString("C")</div>
+                <small class="text-muted">Este total se recalcula automáticamente al guardar</small>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Estatus" class="control-label">Estatus</label>
+                <select asp-for="Estatus" class="form-control">
+                    <option value="pendiente">Pendiente</option>
+                    <option value="confirmada">Confirmada</option>
+                    <option value="activa">Activa</option>
+                    <option value="completada">Completada</option>
+                    <option value="cancelada">Cancelada</option>
+                </select>
+                <span asp-validation-for="Estatus" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-4">
+                <input type="submit" value="Guardar Cambios" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Acciones Rápidas</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.Estatus == "pendiente")
+                {
+                        <a asp-action="CheckIn" asp-route-id="@Model.Id" class="btn btn-success btn-sm">
+                            <i class="fas fa-sign-in-alt"></i> Realizar Check-in
+                        </a>
+                        <p class="text-muted mt-2">Cambia el estatus a "Activa"</p>
+                }
+                else if (Model.Estatus == "activa")
+                {
+                        <a asp-action="CheckOut" asp-route-id="@Model.Id" class="btn btn-primary btn-sm">
+                            <i class="fas fa-sign-out-alt"></i> Realizar Check-out
+                        </a>
+                        <p class="text-muted mt-2">Cambia el estatus a "Completada"</p>
+                }
+
+                <div class="mt-3">
+                    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-info btn-sm">
+                        <i class="fas fa-eye"></i> Ver Detalles
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+        <script>
+            // Validación de fechas en cliente para edición
+            document.addEventListener('DOMContentLoaded', function() {
+                const fechaEntrada = document.getElementById('FechaEntrada');
+                const fechaSalida = document.getElementById('FechaSalida');
+
+                fechaEntrada.addEventListener('change', function() {
+                    if (fechaEntrada.value && fechaSalida.value) {
+                        if (fechaSalida.value <= fechaEntrada.value) {
+                            alert('La fecha de salida debe ser posterior a la fecha de entrada');
+                            fechaSalida.value = '';
+                        }
+                    }
+                });
+            });
+        </script>
+}

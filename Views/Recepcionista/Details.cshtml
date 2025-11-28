@@ -1,0 +1,64 @@
+﻿@model DAS_Final.Models.Reservacion
+
+@{
+    ViewData["Title"] = "Detalles de Reservación";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Detalles de Reservación</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">ID:</dt>
+                                <dd class="col-sm-8">@Model.Id</dd>
+
+                                <dt class="col-sm-4">Usuario:</dt>
+                                <dd class="col-sm-8">@Model.Usuario?.Nombre</dd>
+
+                                <dt class="col-sm-4">Habitación:</dt>
+                                <dd class="col-sm-8">@Model.Habitacion?.NumeroHabitacion</dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">Fecha Entrada:</dt>
+                                <dd class="col-sm-8">@Model.FechaEntrada.ToString("dd/MM/yyyy")</dd>
+
+                                <dt class="col-sm-4">Fecha Salida:</dt>
+                                <dd class="col-sm-8">@Model.FechaSalida.ToString("dd/MM/yyyy")</dd>
+
+                                <dt class="col-sm-4">Total:</dt>
+                                <dd class="col-sm-8">@Model.TotalHabitacion.ToString("C")</dd>
+
+                                <dt class="col-sm-4">Estatus:</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge 
+                                        @(Model.Estatus == "activa" ? "bg-success" : 
+                                          Model.Estatus == "pendiente" ? "bg-warning" : 
+                                          Model.Estatus == "completada" ? "bg-info" : "bg-secondary")">
+                                        @Model.Estatus
+                                    </span>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Volver al Listado
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

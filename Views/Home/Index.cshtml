@@ -1,8 +1,115 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Inicio - Sistema Hotelero";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container-fluid">
+    <!-- Banner de bienvenida -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="alert alert-info mt-3">
+                <h4><i class="fas fa-user me-2"></i>Bienvenido, @ViewBag.UserName!</h4>
+                <p class="mb-0">Rol: <strong>@ViewBag.UserRole</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjetas de módulos -->
+    <div class="row mt-4">
+        <!-- Módulo de Usuarios -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-users fa-3x text-primary"></i>
+                    </div>
+                    <h5 class="card-title">Gestión de Usuarios</h5>
+                    <p class="card-text">Administra los usuarios del sistema, roles y permisos.</p>
+                    <a href="@Url.Action("Index", "ControlUsuario")" class="btn btn-primary">
+                        <i class="fas fa-cog me-2"></i>Administrar Usuarios
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Módulo de Habitaciones -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-bed fa-3x text-success"></i>
+                    </div>
+                    <h5 class="card-title">Gestión de Habitaciones</h5>
+                    <p class="card-text">Administra las habitaciones, precios y disponibilidad.</p>
+                    <a href="@Url.Action("Index", "ControlHabitacion")" class="btn btn-success">
+                        <i class="fas fa-bed me-2"></i>Administrar Habitaciones
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Módulo de Reservaciones -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-calendar-check fa-3x text-warning"></i>
+                    </div>
+                    <h5 class="card-title">Gestión de Reservaciones</h5>
+                    <p class="card-text">Administra las reservaciones y check-in/check-out.</p>
+                    <a href="@Url.Action("Index", "ControlReservacion")" class="btn btn-warning text-white">
+                        <i class="fas fa-calendar me-2"></i>Administrar Reservaciones
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Información adicional -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Información del Sistema</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Funcionalidades disponibles:</h6>
+                            <ul>
+                                <li>Gestión completa de usuarios</li>
+                                <li>Administración de habitaciones</li>
+                                <li>Control de reservaciones</li>
+                                <li>Sistema de autenticación seguro</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Tu rol actual: <span class="badge bg-primary">@ViewBag.UserRole</span></h6>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Estilos adicionales -->
+<style>
+    .card {
+        transition: transform 0.2s;
+        border: none;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
+    }
+
+    .btn {
+        transition: all 0.3s;
+    }
+
+    .btn:hover {
+        transform: scale(1.05);
+    }
+</style>

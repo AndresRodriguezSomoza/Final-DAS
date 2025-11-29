@@ -1,8 +1,10 @@
 ﻿using DAS_Final.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DAS_Final.Controllers
 {
+    [Authorize]
     public class ControlHabitacion : Controller
     {
         private readonly OpHabitacion _operacionesHabitacion;
@@ -102,6 +104,11 @@ namespace DAS_Final.Controllers
                 // Obtener la habitación actual para mantener la imagen si no se sube una nueva
                 var habitacionActual = _operacionesHabitacion.ObtenerHabitacionPorId(id);
 
+                if (habitacionActual == null)
+                {
+                    return NotFound();
+                }
+
                 // SIEMPRE mantener la imagen actual primero
                 habitacion.Img = habitacionActual.Img;
 
@@ -121,7 +128,7 @@ namespace DAS_Final.Controllers
                 // Intentar editar la habitación
                 if (_operacionesHabitacion.EditarHabitacion(habitacion))
                 {
-                    return RedirectToAction(nameof(Index)); // ESTA LÍNEA SIEMPRE DEBE EJECUTARSE
+                    return RedirectToAction(nameof(Index));
                 }
                 else
                 {

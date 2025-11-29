@@ -1,8 +1,10 @@
 ﻿using DAS_Final.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DAS_Final.Controllers
 {
+    [Authorize]
     public class ControlUsuario : Controller
     {
         private readonly OpUsuario _operacionesUsuario;

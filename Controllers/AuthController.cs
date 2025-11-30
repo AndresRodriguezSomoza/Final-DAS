@@ -23,7 +23,20 @@ namespace DAS_Final.Controllers
         {
             if (User.Identity?.IsAuthenticated == true)
             {
-                return RedirectToAction("Index", "Home");
+                // ✅ CORREGIDO: Redirigir según el tipo de usuario si ya está autenticado
+                var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+
+                switch (userRole)
+                {
+                    case "Cliente":
+                        return RedirectToAction("Index", "PaginaClientes");
+                    case "Administrador":
+                        return RedirectToAction("Index", "Home");
+                    case "Recepcionista":
+                        return RedirectToAction("Index", "Home");
+                    default:
+                        return RedirectToAction("Index", "PaginaClientes");
+                }
             }
             return View();
         }
@@ -40,12 +53,12 @@ namespace DAS_Final.Controllers
                 {
                     // Crear claims
                     var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                        new Claim(ClaimTypes.Email, user.Email),
-                        new Claim(ClaimTypes.Name, user.Nombre),
-                        new Claim(ClaimTypes.Role, user.TipoUsuario ?? "Usuario")
-                    };
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.Nombre),
+                new Claim(ClaimTypes.Role, user.TipoUsuario ?? "Cliente")
+            };
 
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
@@ -60,10 +73,24 @@ namespace DAS_Final.Controllers
 
                     TempData["Success"] = $"¡Bienvenido, {user.Nombre}!";
 
+                    // ✅ REDIRECCIÓN SEGÚN TIPO DE USUARIO
                     if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                         return Redirect(returnUrl);
                     else
-                        return RedirectToAction("Index", "Home");
+                    {
+                        // Redirigir según el tipo de usuario
+                        switch (user.TipoUsuario)
+                        {
+                            case "Cliente":
+                                return RedirectToAction("Index", "PaginaClientes");
+                            case "Administrador":
+                                return RedirectToAction("Index", "Home");
+                            case "Recepcionista":
+                                return RedirectToAction("Index", "Home");
+                            default:
+                                return RedirectToAction("Index", "PaginaClientes");
+                        }
+                    }
                 }
 
                 ModelState.AddModelError(string.Empty, "Email o contraseña incorrectos");

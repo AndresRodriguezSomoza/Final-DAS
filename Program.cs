@@ -1,5 +1,6 @@
 using DAS_Final.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.FileProviders;
 using System.Security.Claims; // Para ClaimTypes
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,5 +44,18 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Auth}/{action=Login}/{id?}");
+
+app.Run();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "PaginaClientes")),
+    RequestPath = "/PaginaClientes"
+});
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=PaginaClientes}/{action=Index}/{id?}");
 
 app.Run();

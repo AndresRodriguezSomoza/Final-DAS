@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\PrincipalUsuarios\**" />
+    <Content Remove="Views\PrincipalUsuarios\**" />
+    <EmbeddedResource Remove="Views\PrincipalUsuarios\**" />
+    <None Remove="Views\PrincipalUsuarios\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MySql.Data" Version="9.5.0" />
   </ItemGroup>
 

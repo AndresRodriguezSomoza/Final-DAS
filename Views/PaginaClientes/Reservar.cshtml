@@ -1,0 +1,71 @@
+﻿@model DAS_Final.Models.Reservacion
+@{
+    Layout = null;
+}
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Reservar Habitación - Hotel Mariot</title>
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h3>Confirmar Reserva</h3>
+                    </div>
+                    <div class="card-body">
+
+                        @if (ViewBag.Error != null)
+                        {
+                            <div class="alert alert-danger">@ViewBag.Error</div>
+                        }
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                @if (!string.IsNullOrEmpty(Model.Habitacion.Img))
+                                {
+                                    <img src="~/Img/@Model.Habitacion.Img" class="img-fluid rounded" alt="Habitación">
+                                }
+                            </div>
+                            <div class="col-md-6">
+                                <h4>@Model.Habitacion.TipoHabitacion</h4>
+                                <p><strong>Número:</strong> @Model.Habitacion.NumeroHabitacion</p>
+                                <p><strong>Precio por noche:</strong> $@Model.Habitacion.PrecioNoche</p>
+                                <p>@Model.Habitacion.Descripcion</p>
+                            </div>
+                        </div>
+
+                        <form asp-action="Reservar" method="post">
+                            <input type="hidden" asp-for="HabitacionId" />
+
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label>Fecha de Entrada</label>
+                                    <input asp-for="FechaEntrada" type="date" class="form-control" min="@DateTime.Today.ToString("yyyy-MM-dd")" required />
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Fecha de Salida</label>
+                                    <input asp-for="FechaSalida" type="date" class="form-control" min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" required />
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-success btn-lg btn-block">Confirmar Reserva</button>
+                                <a href="@Url.Action("Index")" class="btn btn-secondary btn-block">Cancelar</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

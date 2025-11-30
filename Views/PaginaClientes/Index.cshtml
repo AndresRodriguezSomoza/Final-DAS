@@ -115,34 +115,34 @@
           </div>
         </div>
         <div class="row">
-                @foreach (var habitacion in Model.Take(3)) // Muestra solo 3 habitaciones en el index
+                @foreach (var habitacion in Model.Take(3))
                 {
-            <div class="col-md-6 col-lg-4" data-aos="fade-up">
-                <a href="@Url.Action("Rooms", "PaginaClientes")" class="room">
-                    <figure class="img-wrap">
+                    <div class="col-md-6 col-lg-4 mb-5" data-aos="fade-up">
+                        <div class="room">
+                            <figure class="img-wrap">
                                 @if (!string.IsNullOrEmpty(habitacion.Img))
                                 {
-                                <img src="~/Img/@habitacion.Img" alt="@habitacion.TipoHabitacion" class="img-fluid mb-3" style="width: 100%; height: 250px; object-fit: cover;">
+                                    <img src="~/Img/@habitacion.Img" alt="@habitacion.TipoHabitacion" class="img-fluid mb-3" style="width: 100%; height: 250px; object-fit: cover;">
                                 }
                                 else
                                 {
-                                <div class="img-placeholder img-fluid mb-3" style="width: 100%; height: 250px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; border: 1px solid #dee2e6;">
-                                    <span class="text-muted">No image available</span>
-                                </div>
+                                    <div class="img-placeholder" style="...">...</div>
                                 }
-                    </figure>
-                    <div class="p-3 text-center room-info">
-                        <h2>@habitacion.TipoHabitacion</h2>
-                        <span class="text-uppercase letter-spacing-1">Room @habitacion.NumeroHabitacion</span><br>
-                        <span class="text-uppercase letter-spacing-1">$@habitacion.PrecioNoche / per night</span><br>
-                        <span class="text-uppercase letter-spacing-1">Capacity: @habitacion.Capacidad @(habitacion.Capacidad == 1 ? "person" : "people")</span>
-                        <p class="mt-2">@habitacion.Descripcion</p>
-                        <div class="mt-3">
-                            <span class="badge @(habitacion.Estatus == "Disponible" ? "badge-success" : "badge-warning")">@habitacion.Estatus</span>
+                            </figure>
+                            <div class="p-3 text-center room-info">
+                                <h2>@habitacion.TipoHabitacion</h2>
+                                <span class="text-uppercase letter-spacing-1">Room @habitacion.NumeroHabitacion</span><br>
+                                <span class="text-uppercase letter-spacing-1">$@habitacion.PrecioNoche / per night</span><br>
+
+                                <div class="mt-4">
+                                    <a href="@Url.Action("Reservar", "PaginaClientes", new { id = habitacion.Id })" class="btn btn-primary text-white">
+                                        Reservar Ahora
+                                    </a>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
-                </a>
-            </div>
                 }
 </div>
         <div class="row mt-5">

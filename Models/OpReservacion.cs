@@ -190,5 +190,42 @@ namespace DAS_Final.Models
                 }
             }
         }
+
+        public bool HayConflictoDeFechas(int habitacionId, DateTime entrada, DateTime salida, int? excluirId = null)
+        {
+            using (var conexion = _conexionBD.ObtenerConexion())
+            {
+                conexion.Open();
+
+                // Construimos la consulta base
+                string query = "SELECT COUNT(*) FROM Reservaciones WHERE habitacion_id = @HabitacionId AND estatus != 'cancelada' AND fecha_salida > @FechaEntrada AND fecha_entrada < @FechaSalida";
+
+                // Si estamos editando (excluirId tiene valor), agregamos la condición para ignorar la reserva actual
+                if (excluirId.HasValue)
+                {
+                    query += " AND id != @ExcluirId";
+                }
+
+                using (var comando = new MySqlCommand(query, conexion))
+                {
+                    // Agregamos los parámetros obligatorios
+                    comando.Parameters.AddWithValue("@HabitacionId", habitacionId);
+                    comando.Parameters.AddWithValue("@FechaEntrada", entrada);
+                    comando.Parameters.AddWithValue("@FechaSalida", salida);
+
+                    // Agregamos el parámetro opcional solo si es necesario
+                    if (excluirId.HasValue)
+                    {
+                        comando.Parameters.AddWithValue("@ExcluirId", excluirId.Value);
+                    }
+
+                    // Ejecutamos y verificamos si hay coincidencias
+                    var count = Convert.ToInt32(comando.ExecuteScalar());
+                    return count > 0;
+                }
+            }
+        }
+
+
     }
 }

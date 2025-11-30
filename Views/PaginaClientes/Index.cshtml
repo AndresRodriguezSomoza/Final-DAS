@@ -51,6 +51,13 @@
                       <ul class="list-unstyled menu">
                         <li class="active"><a href="@Url.Action("Index", "PaginaClientes")">Inicio</a></li>
                         <li><a href="@Url.Action("Rooms", "PaginaClientes")">Habitaciones</a></li>
+                        <li>
+                            <form asp-controller="Auth" asp-action="Logout" method="post" class="d-inline">
+              <button type="submit" class="btn-logout">
+                <i class="fa fa-sign-out me-1"></i>Cerrar Sesión
+              </button>
+            </form>
+                        </li>
                       </ul>
                     </div>
                   </div>
